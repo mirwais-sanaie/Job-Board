@@ -2,6 +2,7 @@
 import { useQuery } from "@tanstack/react-query";
 import Header from "./ui/Header";
 import SearchBar from "./ui/SearchBar";
+import JobTitle from "./features/job/JobTitle";
 
 function AppLayout() {
   // const { data, isPending, isError } = useQuery({
@@ -27,6 +28,7 @@ function AppLayout() {
     <div>
       <Header />
       <SearchBar />
+      <JobTitle />
     </div>
   );
 }

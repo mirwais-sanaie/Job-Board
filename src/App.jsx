@@ -1,10 +1,6 @@
-/* eslint-disable no-unused-vars */
-import { Box, Button, Modal, ThemeProvider } from "@mui/material";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import { useState } from "react";
 import AppLayout from "./AppLayout";
-import theme from "./theme/theme";
 
 function App() {
   // const [open, setOpen] = useState(false);
@@ -35,9 +31,7 @@ function App() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <ThemeProvider theme={theme}>
-        <AppLayout />
-      </ThemeProvider>
+      <AppLayout />
       <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   );
