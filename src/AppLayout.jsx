@@ -1,34 +1,34 @@
-/* eslint-disable no-unused-vars */
-import { useQuery } from "@tanstack/react-query";
 import Header from "./ui/Header";
 import SearchBar from "./ui/SearchBar";
-import JobTitle from "./features/job/JobTitle";
+import JobCart from "./features/job/JobCart";
+import { useJobs } from "./features/job/useJobs";
+import { Button } from "@mui/material";
+import Loader from "./ui/Loader";
+import { toast, ToastContainer } from "react-toastify";
 
 function AppLayout() {
-  // const { data, isPending, isError } = useQuery({
-  //   queryKey: ["posts"],
-  //   queryFn: async () => {
-  //     const response = await fetch("http://localhost:8000/posts");
-  //     const data = await response.json();
-  //     if (!response.ok) {
-  //       throw new Error("Network response was not ok");
-  //     }
-  //     return data;
-  //   },
-  // });
+  const { jobs, error, isLoading } = useJobs();
 
-  // if (isPending) {
-  //   return <div>Loading...</div>;
-  // }
-  // if (isError) {
-  //   return <div>Error while featching data</div>;
-  // }
+  if (error) {
+    toast.error("Error fetching data...");
+  }
 
   return (
     <div>
       <Header />
       <SearchBar />
-      <JobTitle />
+      {isLoading && (
+        <div className="flex justify-center mt-20">
+          <Loader />
+        </div>
+      )}
+      {error && <p>error</p>}
+      {jobs?.map((job) => (
+        <JobCart key={job.title} job={job} />
+      ))}
+      {/* <CreateJob /> */}
+
+      <ToastContainer />
     </div>
   );
 }

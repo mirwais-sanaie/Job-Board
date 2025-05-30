@@ -1,7 +1,5 @@
 import { Box, Button, Grid, Typography } from "@mui/material";
 
-const skills = ["JavaScript", "Java", "Python"];
-
 import { styled } from "@mui/material/styles";
 
 const Wrapper = styled("div")(({ theme }) => ({
@@ -35,18 +33,18 @@ const CompanyName = styled("div")(({ theme }) => ({
   padding: theme.spacing(0.75),
 }));
 
-function JobTitle() {
+function JobCart({ job }) {
   return (
     <Wrapper className="container mx-auto mt-2">
       <Grid container justifyContent="space-between" alignItems="center">
         <Grid>
-          <Typography variant="subtitle1">Frontend Developer</Typography>
-          <CompanyName>Google</CompanyName>
+          <Typography variant="subtitle1">{job.title}</Typography>
+          <CompanyName>{job.companyName}</CompanyName>
         </Grid>
 
         <Grid>
           <Grid container>
-            {skills.map((skill) => (
+            {job?.skills?.map((skill) => (
               <SkillChip key={skill} item>
                 {skill}
               </SkillChip>
@@ -57,7 +55,7 @@ function JobTitle() {
         <Grid container direction={"column"} alignItems={"flex-end"}>
           <Grid>
             <Typography variant="caption">
-              2577 min ago | fulltime | Remote
+              {job.date} | fulltime | Remote
             </Typography>
           </Grid>
           <Grid>
@@ -71,4 +69,4 @@ function JobTitle() {
   );
 }
 
-export default JobTitle;
+export default JobCart;
