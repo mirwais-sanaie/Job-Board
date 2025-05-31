@@ -1,14 +1,20 @@
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, addDoc } from "firebase/firestore";
 import { db } from "../../firebase-config";
 
-export async function getJobs() {
-  const jobsCollection = collection(db, "jobs");
-  const resonseData = await getDocs(jobsCollection);
+const jobsCollection = collection(db, "jobs");
 
-  const jobs = resonseData?.docs?.map((doc) => ({
+export async function getJobs() {
+  const responseData = await getDocs(jobsCollection);
+
+  const jobs = responseData?.docs?.map((doc) => ({
     id: doc.id,
     ...doc.data(),
   }));
 
   return jobs;
+}
+
+export async function createNewJob(data) {
+  await addDoc(jobsCollection, data);
+  return null;
 }
