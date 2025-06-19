@@ -11,6 +11,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { useState } from "react";
 import { X } from "lucide-react";
+import { Controller, useForm } from "react-hook-form";
+import { useCreateJob } from "./useCreateJob";
 
 const predeFinedSkills = [
   "JavaScript",
@@ -25,8 +27,33 @@ const predeFinedSkills = [
   "HTML",
   "CSS",
 ];
+interface CreateJobFormData {
+  title: string;
+  type: string;
+  companyName: string;
+  companyUrl: string;
+  locationType: string;
+  link: string;
+  date: string;
+  skill: [];
+}
+
 function CreateJob() {
   const [selectedSkills, setSelectedSkills] = useState<string[]>([]);
+  const { createJobFN, isPending, error } = useCreateJob();
+
+  const { handleSubmit, register, control, reset } =
+    useForm<CreateJobFormData>();
+
+  function onSubmit(data: CreateJobFormData) {
+    const finalData = { ...data, skills: selectedSkills };
+    createJobFN(finalData);
+    reset();
+    setSelectedSkills([]);
+  }
+  function onError(errors: unknown) {
+    console.log(errors);
+  }
 
   function handleSelectedSkill(skill: string) {
     if (!skill || selectedSkills.includes(skill)) return;
@@ -35,26 +62,39 @@ function CreateJob() {
   function handleDeleteSkill(skill: string) {
     setSelectedSkills(selectedSkills.filter((s) => s !== skill));
   }
+
   return (
-    <>
+    <form onSubmit={handleSubmit(onSubmit, onError)}>
       {/* First row */}
       <div className="flex gap-4">
         <div className="w-1/2 space-y-1">
           <Label>Job Title *</Label>
-          <Input />
+          <Input
+            type="text"
+            {...register("title", {
+              required: "Job title is required",
+            })}
+          />
         </div>
         <div className="w-1/2 space-y-1">
           <Label>Job Type *</Label>
-          <Select>
-            <SelectTrigger className="w-full">
-              <SelectValue placeholder="Select job type" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="FullTime">Full time</SelectItem>
-              <SelectItem value="PartTime">Part time</SelectItem>
-              <SelectItem value="Contract">Contract</SelectItem>
-            </SelectContent>
-          </Select>
+          <Controller
+            name="type"
+            control={control}
+            rules={{ required: "Job type is required" }}
+            render={({ field }) => (
+              <Select onValueChange={field.onChange} value={field.value}>
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Select job type" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="FullTime">Full time</SelectItem>
+                  <SelectItem value="PartTime">Part time</SelectItem>
+                  <SelectItem value="Contract">Contract</SelectItem>
+                </SelectContent>
+              </Select>
+            )}
+          />
         </div>
       </div>
 
@@ -62,11 +102,21 @@ function CreateJob() {
       <div className="flex gap-4 mt-4">
         <div className="w-1/2 space-y-1">
           <Label>Company Name *</Label>
-          <Input />
+          <Input
+            type="text"
+            {...register("companyName", {
+              required: "Company Name is required",
+            })}
+          />
         </div>
         <div className="w-1/2 space-y-1">
           <Label>Company URL *</Label>
-          <Input />
+          <Input
+            type="text"
+            {...register("companyUrl", {
+              required: "Company Url is required",
+            })}
+          />
         </div>
       </div>
 
@@ -74,20 +124,32 @@ function CreateJob() {
       <div className="flex gap-4 mt-4">
         <div className="w-1/2 space-y-1">
           <Label>Location Type</Label>
-          <Select>
-            <SelectTrigger className="w-full">
-              <SelectValue placeholder="Select location type" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="remote">Remote</SelectItem>
-              <SelectItem value="inOffice">In Office</SelectItem>
-            </SelectContent>
-          </Select>
+          <Controller
+            name="locationType"
+            control={control}
+            rules={{ required: "Location type is required" }}
+            render={({ field }) => (
+              <Select onValueChange={field.onChange} value={field.value}>
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Select location type" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="remote">Remote</SelectItem>
+                  <SelectItem value="inOffice">In Office</SelectItem>
+                </SelectContent>
+              </Select>
+            )}
+          />
         </div>
 
         <div className="w-1/2 space-y-1">
           <Label>Job Link</Label>
-          <Input />
+          <Input
+            type="text"
+            {...register("link", {
+              required: "Job link is required",
+            })}
+          />
         </div>
       </div>
 
@@ -131,7 +193,17 @@ function CreateJob() {
           </div>
         )}
       </div>
-    </>
+
+      <div className="mt-6">
+        <button
+          type="submit"
+          className="px-4 py-2 bg-primary text-white rounded hover:bg-primary/90 transition-colors"
+        >
+          {isPending ? "Creating..." : "Post Job"}
+        </button>
+        {error && "Error while creating job!"}
+      </div>
+    </form>
   );
 }
 

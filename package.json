@@ -18,14 +18,17 @@
     "@tanstack/react-query": "^5.80.7",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "firebase": "^11.9.1",
     "lucide-react": "^0.517.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
+    "react-hook-form": "^7.58.1",
     "tailwind-merge": "^3.3.1",
     "tailwindcss": "^4.1.10"
   },
   "devDependencies": {
     "@eslint/js": "^9.25.0",
+    "@types/firebase": "^3.2.3",
     "@types/node": "^24.0.3",
     "@types/react": "^19.1.2",
     "@types/react-dom": "^19.1.2",

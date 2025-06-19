@@ -1,28 +1,10 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils"; // Optional utility for conditional classes
+import { cn } from "@/lib/utils";
+import type { Job } from "../../services/apiJobs";
 
-// type Job = {
-//   title: string;
-//   companyName: string;
-//   date: string;
-//   skills?: string[];
-// };
-const predeFinedSkills = [
-  "JavaScript",
-  "React",
-  "Node.js",
-  "Python",
-  "Java",
-  "C#",
-  "Ruby",
-  "PHP",
-  "SQL",
-  "HTML",
-  "CSS",
-];
-
-function JobCart() {
+function JobCart({ job }: { job: Job }) {
+  const { title, companyName, date, skills } = job;
   return (
     <div
       className={cn(
@@ -32,15 +14,15 @@ function JobCart() {
       <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4">
         {/* Job title and company */}
         <div>
-          <p className="text-lg font-semibold">title</p>
+          <p className="text-lg font-semibold">{title}</p>
           <span className="inline-block text-sm bg-primary text-white rounded px-3 py-1 font-semibold mt-1">
-            companyName
+            {companyName}
           </span>
         </div>
 
         {/* Skills */}
         <div className="flex flex-wrap gap-2">
-          {predeFinedSkills.map((skill) => (
+          {skills?.map((skill) => (
             <Badge
               key={skill}
               className="text-sm font-semibold bg-foreground text-white rounded px-3 py-1"
@@ -53,7 +35,7 @@ function JobCart() {
         {/* Meta info and action */}
         <div className="flex flex-col items-end">
           <p className="text-xs text-muted-foreground">
-            date | Full Time | Remote
+            {date} | Full Time | Remote
           </p>
           <Button variant="outline" className="mt-2">
             Check
