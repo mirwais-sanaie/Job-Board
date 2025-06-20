@@ -12,6 +12,10 @@ export type Job = {
   id?: string;
   title: string;
   companyName: string;
+  link: string;
+  companyUrl: string;
+  locationType: string;
+  type: string;
   date: string;
   skills?: string[];
 };

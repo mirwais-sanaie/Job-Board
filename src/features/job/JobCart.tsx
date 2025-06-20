@@ -2,9 +2,29 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import type { Job } from "../../services/apiJobs";
+import {
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+  DialogClose,
+} from "@/components/ui/dialog";
 
 function JobCart({ job }: { job: Job }) {
-  const { title, companyName, date, skills } = job;
+  const {
+    title,
+    companyName,
+    date,
+    skills,
+    companyUrl,
+    link,
+    type,
+    locationType,
+  } = job;
+
   return (
     <div
       className={cn(
@@ -35,11 +55,43 @@ function JobCart({ job }: { job: Job }) {
         {/* Meta info and action */}
         <div className="flex flex-col items-end">
           <p className="text-xs text-muted-foreground">
-            {date} | Full Time | Remote
+            {date} | {type} | {locationType}
           </p>
-          <Button variant="outline" className="mt-2">
-            Check
-          </Button>
+
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button variant="outline" className="mt-2">
+                Check
+              </Button>
+            </DialogTrigger>
+
+            <DialogContent className="max-w-lg">
+              <DialogHeader>
+                <DialogTitle>{title}</DialogTitle>
+                <DialogDescription>{companyName}</DialogDescription>
+              </DialogHeader>
+
+              <div className="my-4">
+                <p className="mb-2 text-sm text-muted-foreground">
+                  {date} | {type} | {locationType}
+                </p>
+                <div className="flex flex-wrap gap-2 mb-4">
+                  {skills?.map((skill) => (
+                    <Badge key={skill}>{skill}</Badge>
+                  ))}
+                </div>
+                {/* <p>{description ?? "No description provided."}</p> */}
+                <p>{link}</p>
+                <p>{companyUrl}</p>
+              </div>
+
+              <DialogFooter>
+                <DialogClose asChild>
+                  <Button>Close</Button>
+                </DialogClose>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
         </div>
       </div>
     </div>
