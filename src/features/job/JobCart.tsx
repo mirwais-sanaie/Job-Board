@@ -45,7 +45,7 @@ function JobCart({ job }: { job: Job }) {
           {skills?.map((skill) => (
             <Badge
               key={skill}
-              className="text-sm font-semibold bg-foreground text-white rounded px-3 py-1"
+              className="text-sm font-semibold bg-popover-foreground text-muted rounded px-3 py-1"
             >
               {skill}
             </Badge>
