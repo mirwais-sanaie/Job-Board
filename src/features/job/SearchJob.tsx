@@ -6,30 +6,44 @@ import {
   SelectItem,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
+import { useSearchParams } from "react-router-dom";
 
 function SearchBar() {
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  function handleSetJobType(value: string) {
+    searchParams.set("jobType", value);
+    setSearchParams(searchParams);
+  }
+  function handleSetLocationType(value: string) {
+    searchParams.set("location", value);
+    setSearchParams(searchParams);
+  }
+
   return (
     <div
       className={`container mx-auto flex justify-between items-center gap-4 -mt-6 p-3 py-5 bg-background border`}
     >
-      <Select defaultValue="full-time">
+      <Select defaultValue="all" onValueChange={handleSetJobType}>
         <SelectTrigger className="w-1/3 py-6">
           <SelectValue placeholder="Job Type" />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value="full-time">Full Time</SelectItem>
-          <SelectItem value="part-time">Part Time</SelectItem>
-          <SelectItem value="contract">Contract</SelectItem>
+          <SelectItem value="all">All</SelectItem>
+          <SelectItem value="FullTime">Full Time</SelectItem>
+          <SelectItem value="PartTime">Part Time</SelectItem>
+          <SelectItem value="Contract">Contract</SelectItem>
         </SelectContent>
       </Select>
 
-      <Select defaultValue="remote">
+      <Select defaultValue="all" onValueChange={handleSetLocationType}>
         <SelectTrigger className="w-1/3 py-6">
           <SelectValue placeholder="Location" />
         </SelectTrigger>
         <SelectContent>
+          <SelectItem value="all">All</SelectItem>
           <SelectItem value="remote">Remote</SelectItem>
-          <SelectItem value="in-office">In-office</SelectItem>
+          <SelectItem value="inOffice">In-office</SelectItem>
         </SelectContent>
       </Select>
 
